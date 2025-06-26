@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'apps.user',
     'apps.product',
+    'apps.payment_Gateway',
 ]
 REST_FRAMEWORK = {
      'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -137,3 +138,6 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'user.User'
+PAYHERE_MERCHANT_ID = 'YourMerchantID'
+PAYHERE_MERCHANT_SECRET = 'YourMerchantSecret'
+PAYMENT_CURRENCY = 'LKR'

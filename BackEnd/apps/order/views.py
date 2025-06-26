@@ -10,9 +10,10 @@ class OrderCreateView(APIView):
         serializer = OrderSerializer(data=request.data)
         if serializer.is_valid():
             order = serializer.save()
+            full_order_data=OrderSerializer(order).data
             return Response({
                 'message': 'Order placed successfully',
-                'order_id': order.id
+                'order_id': full_order_data
             }, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -20,7 +21,7 @@ class OrderStatusUpdateView(UpdateAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
 
-    def patch(self, request, pk):
+    def patch(self, request,*args, **kwargs):
         order = self.get_object()
         new_status = request.data.get('status')
 
