@@ -1,6 +1,17 @@
 from rest_framework import serializers
-from .models import User
 from django.contrib.auth import authenticate
+from django.contrib.auth.backends import ModelBackend
+from .models import User
+
+class ContactNumberBackend(ModelBackend):
+    def authenticate(self, request, contact_number=None, password=None, **kwargs):
+        try:
+            user = User.objects.get(contact_number=contact_number)
+            if user.check_password(password):
+                return user
+        except User.DoesNotExist:
+            return None
+
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
     class Meta:

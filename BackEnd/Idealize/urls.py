@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
+
 """
 URL configuration for Idealize project.
 
@@ -22,6 +23,7 @@ from django.urls import path
 urlpatterns = [
     #    path('admin/', admin.site.urls),
 path('admin/', admin.site.urls),
+
     path('api/user/', include('apps.user.urls')),
     path('api/product/', include('apps.product.urls')),
     path('api/payment-gateway/',include('apps.payment_Gateway.urls'))

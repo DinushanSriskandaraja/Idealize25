@@ -64,6 +64,11 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+AUTHENTICATION_BACKENDS = [
+    'apps.user.serializers.ContactNumberBackend',
+    'django.contrib.auth.backends.ModelBackend',# update this path to match your app
+]
+
 
 ROOT_URLCONF = 'Idealize.urls'
 
