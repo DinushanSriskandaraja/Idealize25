@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'apps.user',
     'apps.product',
+    'apps.order',
     'apps.payment_Gateway',
 ]
 REST_FRAMEWORK = {

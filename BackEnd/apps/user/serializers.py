@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.backends import ModelBackend
 from .models import User
 
+
 class ContactNumberBackend(ModelBackend):
     def authenticate(self, request, contact_number=None, password=None, **kwargs):
         try:
@@ -21,6 +22,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         return User.objects.create_user(**validated_data)
+
 
 class UserLoginSerializer(serializers.Serializer):
     contact_number = serializers.CharField()
