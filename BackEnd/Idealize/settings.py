@@ -146,3 +146,7 @@ AUTH_USER_MODEL = 'user.User'
 PAYHERE_MERCHANT_ID = 'YourMerchantID'
 PAYHERE_MERCHANT_SECRET = 'YourMerchantSecret'
 PAYMENT_CURRENCY = 'LKR'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+

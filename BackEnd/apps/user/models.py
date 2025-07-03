@@ -46,4 +46,4 @@ class User(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ['name', 'role']
 
     def __str__(self):
-        return f"{self.name} ({self.role})"
+        return f"{self.contact_number} ({self.role})"
