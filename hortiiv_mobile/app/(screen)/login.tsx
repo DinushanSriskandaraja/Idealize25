@@ -11,74 +11,51 @@ import { LinearGradient } from "expo-linear-gradient";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { useRouter } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { navigate } from "expo-router/build/global-state/routing";
-// import QRCodeScanner from "react-native-qrcode-scanner";
-// import { RNCamera } from "react-native-camera";
+import { login } from "../../api/authapi"; // adjust path as needed
 
 const LoginScreen = () => {
   const router = useRouter();
-  const [username, setUsername] = useState<string>("");
+  const [contactNumber, setContactNumber] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showQRScanner, setShowQRScanner] = useState<boolean>(false);
 
-  const handleLogin = async (
-    loginData: { username: string; password: string } | string
-  ) => {
-    let authData: { username: string; password: string };
-
-    if (typeof loginData === "string") {
-      // QR code scanned data (assume JSON string with username and password)
-      try {
-        authData = JSON.parse(loginData);
-        if (!authData.username || !authData.password) {
-          throw new Error("Invalid QR code data");
-        }
-      } catch (error) {
-        Alert.alert(
-          "Error",
-          "Invalid QR code. Please scan a valid login QR code."
-        );
-        setIsLoading(false);
-        return;
-      }
-    } else {
-      authData = loginData;
-    }
-
-    if (!authData.username || !authData.password) {
-      Alert.alert("Error", "Please enter both username and password.");
+  const handleLogin = async (p0: {
+    contactNumber: string;
+    password: string;
+  }) => {
+    if (!contactNumber || !password) {
+      Alert.alert("Error", "Please enter both contact number and password.");
       return;
     }
 
     setIsLoading(true);
+
     try {
-      // Simulate API call for login (replace with actual backend API call)
-      // Example: const response = await axios.post('https://your-api.com/login', authData);
-      await AsyncStorage.setItem("authToken", "sample-token");
+      // Make API call
+      await login({ contact_number: contactNumber, password });
+
+      // Save additional user info if needed (or fetch from API if available)
       await AsyncStorage.setItem(
         "userData",
         JSON.stringify({
-          name: authData.username,
+          contactNumber,
           address: "123 Farm Lane, Village A",
-          phoneNumber: "+91-9876543210",
+          phoneNumber: contactNumber,
         })
       );
+
+      // Navigate to homescreen
       router.replace("/homescreen");
-    } catch (error) {
-      console.error("Login error:", error);
-      Alert.alert(
-        "Error",
-        "Failed to log in. Please check your credentials and try again."
-      );
+    } catch (error: any) {
+      console.error("Login failed:", error);
+      Alert.alert("Login Failed", error.message || "Invalid credentials");
     } finally {
       setIsLoading(false);
-      setShowQRScanner(false); // Close scanner after attempt
     }
   };
-
   const handleQRScan = (e: any) => {
-    handleLogin(e.data); // Pass scanned QR code data to handleLogin
+    // handleLogin(e.data); // Pass scanned QR code data to handleLogin
   };
 
   return (
@@ -89,25 +66,8 @@ const LoginScreen = () => {
       <View style={styles.content}>
         {showQRScanner ? (
           <View style={styles.qrContainer}>
-            {/* <QRCodeScanner
-              onRead={handleQRScan}
-              flashMode={RNCamera.Constants.FlashMode.auto}
-              topContent={
-                <Text style={styles.qrInstruction}>
-                  Scan the QR code to log in
-                </Text>
-              }
-              bottomContent={
-                <TouchableOpacity
-                  style={styles.cancelButton}
-                  onPress={() => setShowQRScanner(false)}>
-                  <Text style={styles.cancelButtonText}>Cancel</Text>
-                </TouchableOpacity>
-              }
-              cameraStyle={styles.camera}
-            /> */}
+            {/* QR Scanner UI - Under Construction */}
             <Text>Feature Under construction</Text>
-
             <TouchableOpacity
               style={styles.cancelButton}
               onPress={() => setShowQRScanner(false)}>
@@ -120,17 +80,17 @@ const LoginScreen = () => {
             style={styles.formCard}>
             <View style={styles.inputContainer}>
               <Icon
-                name="person"
+                name="phone"
                 size={20}
                 color="#4CAF50"
                 style={styles.inputIcon}
               />
               <TextInput
                 style={styles.input}
-                placeholder="Username"
-                value={username}
-                onChangeText={setUsername}
-                autoCapitalize="none"
+                placeholder="Contact Number"
+                value={contactNumber}
+                onChangeText={setContactNumber}
+                keyboardType="phone-pad"
                 placeholderTextColor="#757575"
               />
             </View>
@@ -153,7 +113,7 @@ const LoginScreen = () => {
             <TouchableOpacity
               style={styles.loginButton}
               activeOpacity={0.9}
-              onPress={() => handleLogin({ username, password })}
+              onPress={() => handleLogin({ contactNumber, password })}
               disabled={isLoading}>
               <LinearGradient
                 colors={["#4CAF50", "#66BB6A"]}
@@ -182,6 +142,7 @@ const LoginScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  // ... keep your existing styles unchanged
   container: {
     flex: 1,
     backgroundColor: "#F5F5F5",

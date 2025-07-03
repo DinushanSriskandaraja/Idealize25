@@ -9,7 +9,7 @@ export default function AuthLayout() {
         headerStyle: { backgroundColor: "#f8e1e9" },
         headerTintColor: "#333",
       }}>
-      <Stack.Screen name="login" options={{ headerShown: false }} />
+      {/* <Stack.Screen name="login" options={{ headerShown: false }} /> */}
       <Stack.Screen name="homescreen" options={{ headerShown: false }} />
       <Stack.Screen name="MyAccount" options={{ headerShown: false }} />
       <Stack.Screen name="notification" options={{ headerShown: false }} />
